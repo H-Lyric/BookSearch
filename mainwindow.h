@@ -7,6 +7,9 @@
 #include <QUrl>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFileDialog>
+#include <QMessageBox>
+#include "QZXing.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +24,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_ScanBtn_clicked();
     void on_SearchBtn_clicked();
     void replyFinished(QNetworkReply *reply);
 

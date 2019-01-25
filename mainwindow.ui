@@ -44,7 +44,14 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="Input">
+      <widget class="QPushButton" name="ScanBtn">
+       <property name="text">
+        <string>Scan</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="IsbnEdit">
        <property name="text">
         <string/>
        </property>
