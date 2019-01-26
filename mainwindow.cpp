@@ -7,6 +7,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->IsbnEdit->setPlaceholderText("Scan or input ISBN");
+    ui->TitleLbl->setWordWrap(true);
+    ui->CoverLbl->setScaledContents(true);
+
     connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
 }
 
@@ -46,22 +49,32 @@ void MainWindow::on_SearchBtn_clicked()
 void MainWindow::replyFinished(QNetworkReply *reply)
 {
    ui->SearchBtn->setEnabled(true);
-   ui->BookInfo->setWordWrap(true);
 
-   if(reply->error() == QNetworkReply::NoError)
-   {
+   if(reply->error() == QNetworkReply::NoError){
        QJsonParseError parseJsonErr;
        QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll(), &parseJsonErr);
-       if(!(parseJsonErr.error == QJsonParseError::NoError))
-       {
+       if(!(parseJsonErr.error == QJsonParseError::NoError)){
            qDebug() << QString("Wrong");
        }
        QJsonObject jsonObject = jsonDocument.object();
        QString title = jsonObject["title"].toString();
-       ui->BookInfo->setText(title);
+       ui->TitleLbl->setText(title);
+
+       QUrl iurl(jsonObject["image"].toString()); //construct
+       QNetworkAccessManager *imanager= new QNetworkAccessManager();
+       QNetworkRequest irequest;
+       irequest.setUrl(iurl);
+       QNetworkReply *ireply = imanager->get(irequest);
+       QObject::connect(imanager,&QNetworkAccessManager::finished,[=]{
+           QPixmap pixmap;
+           pixmap.loadFromData(ireply->readAll());
+           pixmap.scaled(ui->CoverLbl->size(), Qt::KeepAspectRatio);
+           ui->CoverLbl->setPixmap(pixmap);
+           ireply->deleteLater();
+       });
    }
-   else
-   {
+   else{
        qDebug() << "Error";
    }
+   reply->deleteLater();
 }

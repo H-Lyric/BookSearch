@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    int fetch; //if fetch == 0, fetch book title; if fetch == 1, fetch book cover
 
 private slots:
     void on_ScanBtn_clicked();
