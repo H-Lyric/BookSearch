@@ -1,6 +1,6 @@
 # BookSearch
 Search book information according to ISBN  
-![pic1](pic1.PNG) ![pic2](pic2.PNG)  
+<img src=pic1.PNG height=250 /> <img src=pic2.PNG height=250 />  
 
 ## Update Log  
 
