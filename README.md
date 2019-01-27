@@ -1,6 +1,6 @@
 # BookSearch
 Search book information according to ISBN  
-<img src=pic1.PNG height=250 /> <img src=pic2.PNG height=250 />  
+<img src=img1.PNG height=200 /> <img src=img2.PNG height=200 />  
 
 ## Update Log  
 
@@ -12,4 +12,8 @@ Date: 2019-01-25
 Add function: scan ISBN from image.  
 ### Ver.0.2
 Date: 2019-01-26  
-Add function: show book cover.
+Add function: show book cover.  
+### Ver.0.3  
+Date: 2019-01-27  
+1.Add function: show authors and rating.  
+2.Fix memory leak problem.
