@@ -58,7 +58,18 @@ void MainWindow::replyFinished(QNetworkReply *reply)
        }
        QJsonObject jsonObject = jsonDocument.object();
        QString title = jsonObject["title"].toString();
-       ui->TitleLbl->setText(title);
+
+       QJsonArray autArray = jsonObject.value("author").toArray();
+       QStringList authors;
+       for(int i = 0; i< autArray.size(); i++){
+           authors.append(autArray.at(i).toString());
+       }
+
+       QJsonValue ratVal = jsonObject.value("rating");
+       QJsonObject ratObj = ratVal.toObject();
+       QString averate = ratObj["average"].toString();
+
+       ui->TitleLbl->setText(title+"\n"+authors.join(", ")+"\n"+"Rating: "+averate);
 
        QUrl iurl(jsonObject["image"].toString()); //construct
        QNetworkAccessManager *imanager= new QNetworkAccessManager();
@@ -71,6 +82,7 @@ void MainWindow::replyFinished(QNetworkReply *reply)
            pixmap.scaled(ui->CoverLbl->size(), Qt::KeepAspectRatio);
            ui->CoverLbl->setPixmap(pixmap);
            ireply->deleteLater();
+           imanager->deleteLater();
        });
    }
    else{

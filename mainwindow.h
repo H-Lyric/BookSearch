@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QStringList>
 #include "QZXing.h"
 
 namespace Ui {
