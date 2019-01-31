@@ -6,7 +6,7 @@ Search book information according to ISBN
 
 * Ver.0.0  
 Date: 2019-01-24  
-initial version with basic search function  
+Initial version with basic search function  
 * Ver.0.1  
 Date: 2019-01-25  
 Add function: scan ISBN from image  
