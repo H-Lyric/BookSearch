@@ -4,17 +4,23 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QtNetwork>
-#include <QUrl>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStringList>
 #include "QZXing.h"
+#include "networker.h"
+#include "book.h"
 
 namespace Ui {
 class MainWindow;
 }
+
+enum RemoteRequest {
+    FetchInfo,
+    FetchCover
+};
 
 class MainWindow : public QMainWindow
 {
@@ -23,16 +29,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    int fetch; //if fetch == 0, fetch book title; if fetch == 1, fetch book cover
 
 private slots:
     void on_ScanBtn_clicked();
     void on_SearchBtn_clicked();
-    void replyFinished(QNetworkReply *reply);
 
 private:
     Ui::MainWindow *ui;
-    QNetworkAccessManager manager;
+    RemoteRequest request;
+    NetWorker *netWorker;
 };
 
 #endif // MAINWINDOW_H

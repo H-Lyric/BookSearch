@@ -10,7 +10,45 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->TitleLbl->setWordWrap(true);
     ui->CoverLbl->setScaledContents(true);
 
-    connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    netWorker = NetWorker::instance();
+
+    connect(netWorker, &NetWorker::finished, [=](QNetworkReply *reply){
+
+        ui->SearchBtn->setEnabled(true);
+        Book book;
+        switch (request) {
+        case FetchInfo:{
+            if(reply->error() == QNetworkReply::NoError){
+                QJsonParseError parseJsonErr;
+                QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll(), &parseJsonErr);
+                if(!(parseJsonErr.error == QJsonParseError::NoError)){
+                    qDebug() << QString("Wrong");
+                }
+                QJsonObject jsonObject = jsonDocument.object();
+                book.setTitle(jsonObject["title"].toString());
+                book.setAuthors(jsonObject.value("author").toArray());
+                QJsonValue ratVal = jsonObject.value("rating");
+                QJsonObject ratObj = ratVal.toObject();
+                book.setAveRate(ratObj["average"].toString());
+                ui->TitleLbl->setText(book.getTitle()+"\n"
+                                      +book.getAuthors().join(", ")+"\n"
+                                      +"Rating: "+book.getAveRate());
+                request = FetchCover;
+                netWorker->get(jsonObject["image"].toString());
+            }
+            else{
+                qDebug() << "Error";
+            }
+            reply->deleteLater();
+        }
+        case FetchCover:{
+            //QPixmap pixmap;
+            //pixmap.loadFromData(reply->readAll());
+            book.setCover(reply->readAll());
+            ui->CoverLbl->setPixmap(book.getCover());
+        }
+        }
+    });
 }
 
 MainWindow::~MainWindow()
@@ -39,54 +77,8 @@ void MainWindow::on_SearchBtn_clicked()
 {
    ui->SearchBtn->setEnabled(false);
    QString Isbn = ui->IsbnEdit->text();
-   QUrl url(QString("https://api.douban.com/v2/book/isbn/:%1").arg(Isbn));
-   QNetworkRequest request;
-   request.setUrl(url);
-   manager.get(request);
-
+   request = FetchInfo;
+   netWorker->get(QString("https://api.douban.com/v2/book/isbn/:%1").arg(Isbn));
 }
 
-void MainWindow::replyFinished(QNetworkReply *reply)
-{
-   ui->SearchBtn->setEnabled(true);
 
-   if(reply->error() == QNetworkReply::NoError){
-       QJsonParseError parseJsonErr;
-       QJsonDocument jsonDocument = QJsonDocument::fromJson(reply->readAll(), &parseJsonErr);
-       if(!(parseJsonErr.error == QJsonParseError::NoError)){
-           qDebug() << QString("Wrong");
-       }
-       QJsonObject jsonObject = jsonDocument.object();
-       QString title = jsonObject["title"].toString();
-
-       QJsonArray autArray = jsonObject.value("author").toArray();
-       QStringList authors;
-       for(int i = 0; i< autArray.size(); i++){
-           authors.append(autArray.at(i).toString());
-       }
-
-       QJsonValue ratVal = jsonObject.value("rating");
-       QJsonObject ratObj = ratVal.toObject();
-       QString averate = ratObj["average"].toString();
-
-       ui->TitleLbl->setText(title+"\n"+authors.join(", ")+"\n"+"Rating: "+averate);
-
-       QUrl iurl(jsonObject["image"].toString()); //construct
-       QNetworkAccessManager *imanager= new QNetworkAccessManager();
-       QNetworkRequest irequest;
-       irequest.setUrl(iurl);
-       QNetworkReply *ireply = imanager->get(irequest);
-       QObject::connect(imanager,&QNetworkAccessManager::finished,[=]{
-           QPixmap pixmap;
-           pixmap.loadFromData(ireply->readAll());
-           pixmap.scaled(ui->CoverLbl->size(), Qt::KeepAspectRatio);
-           ui->CoverLbl->setPixmap(pixmap);
-           ireply->deleteLater();
-           imanager->deleteLater();
-       });
-   }
-   else{
-       qDebug() << "Error";
-   }
-   reply->deleteLater();
-}
