@@ -16,4 +16,9 @@ Add function: show book cover
 * Ver.0.3  
 Date: 2019-01-27  
 1.Add function: show authors and rating  
-2.Fix memory leak problem
+2.Fix memory leak problem  
+* Ver.1.0  
+Date: 2019-02-21  
+Rewrite program:  
+1.Use a singleton class to access the internet  
+2.Use class to store book information  
