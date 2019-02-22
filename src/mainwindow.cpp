@@ -42,8 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
             reply->deleteLater();
         }
         case FetchCover:{
-            //QPixmap pixmap;
-            //pixmap.loadFromData(reply->readAll());
             book.setCover(reply->readAll());
             ui->CoverLbl->setPixmap(book.getCover());
         }
