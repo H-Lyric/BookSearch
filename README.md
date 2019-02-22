@@ -3,4 +3,4 @@
 BookSearch is a program that search book information according to ISBN or barcode, using API from Douban.   
 It's written in C++ and Qt.  
   
-<img src=img1.PNG height=200 /> <img src=img2.PNG height=200 />  
+<img src=./screenshot/img1.png height=200 /> <img src=./screenshot/img2.png height=200 />  
