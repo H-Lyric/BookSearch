@@ -1,5 +1,6 @@
 # BookSearch
-Search book information according to ISBN  
+Search book information according to ISBN or barcode  
+  
 <img src=img1.PNG height=200 /> <img src=img2.PNG height=200 />  
 
 ## Update Log  
