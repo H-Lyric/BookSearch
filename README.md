@@ -1,4 +1,5 @@
-# BookSearch ![version](https://img.shields.io/badge/version-1.0-brightgreen.svg)  
+# BookSearch 
+![version](https://img.shields.io/badge/version-1.0-brightgreen.svg)  
 BookSearch is a program that search book information according to ISBN or barcode, using API from Douban.   
 It's written in C++ and Qt.  
   
