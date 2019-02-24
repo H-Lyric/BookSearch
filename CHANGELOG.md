@@ -21,5 +21,5 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0] - 2019-02-21
 ### Rewrite program
-- Use a singleton class to access the internet  
-- Use class to store book information 
+- Use a singleton class to access the internet.  
+- Use class to store book information. 
