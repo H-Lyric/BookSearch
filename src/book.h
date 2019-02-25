@@ -12,16 +12,16 @@ public:
     Book();
     ~Book();
 
-    QString getTitle();
+    QString getTitle() const;
     void setTitle(const QString &title);
 
-    QStringList getAuthors();
+    QStringList getAuthors() const;
     void setAuthors(const QJsonArray &autarray);
 
-    QString getAveRate();
+    QString getAveRate() const;
     void setAveRate(const QString &averate);
 
-    QPixmap getCover();
+    QPixmap getCover() const;
     void setCover(const QByteArray &data);
 
 private:

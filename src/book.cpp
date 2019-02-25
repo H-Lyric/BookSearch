@@ -11,7 +11,7 @@ Book::~Book()
     d = 0;
 }
 
-QString Book::getTitle()
+QString Book::getTitle() const
 {
     return d->m_title;
 }
@@ -21,7 +21,7 @@ void Book::setTitle(const QString &title)
     d->m_title = title;
 }
 
-QStringList Book::getAuthors()
+QStringList Book::getAuthors() const
 {
     return d->m_authors;
 }
@@ -33,7 +33,7 @@ void Book::setAuthors(const QJsonArray &autarray)
     }
 }
 
-QString Book::getAveRate()
+QString Book::getAveRate() const
 {
     return d->m_averate;
 }
@@ -43,7 +43,7 @@ void Book::setAveRate(const QString &averate)
     d->m_averate = averate;
 }
 
-QPixmap Book::getCover()
+QPixmap Book::getCover() const
 {
     return d->m_cover;
 }
